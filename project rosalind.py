@@ -22,16 +22,11 @@ def read_FASTA(file_path):
       d[key] = d[key]+line
   return(d)
 
-dnaSeq = 'GATGGAACTTGACTACGTAAATT'
-
 def dna2rna(dnaSeq):
  '''translates DNA into RNA'''
  rnaSeq = ""
- for T in dnaSeq:
-     rnaSeq = dnaSeq.replace('T', 'U') 
- print(rnaSeq)
+ rnaSeq = dnaSeq.replace('T', 'U')  
  return rnaSeq
-
 
 #DNA to protein code from lab 2  
 #uses the codon table to translate groups of 3 base pairs into a protein
