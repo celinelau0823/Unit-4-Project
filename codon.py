@@ -23,4 +23,5 @@ for key in codonDict:
     newKey = key.replace("T", "U")
     newVal = codonDict[key]
     cDict[newKey] = newVal
+ 
 print(cDict)

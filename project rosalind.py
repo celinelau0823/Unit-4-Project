@@ -2,6 +2,7 @@
 ###Lab 4: Project Rosalind
 
 import codon as d# this is my file with your codon dictionaries!
+import rnacodon as rnacd #file with rna to codon dicitonary
 import numpy as np
 import os
 
@@ -28,6 +29,18 @@ def dna2rna(dnaSeq):
  rnaSeq = dnaSeq.replace('T', 'U')  
  return rnaSeq
 
+#reformatted version of reverse strand maker from lab 2
+#reverses order of original strand and creates compliment
+def rStrand(dnaSeq):
+  while len(dnaSeq) % 3 != 0:
+    dnaSeq = dnaSeq[:len(dnaSeq)-1]
+  r = dnaSeq[::-1] #indexes dnaSeq backwards
+
+  rComp = r.replace('A', 't').replace('T', 'a').replace('C','g').replace('G','c') #creates opposite strand of DNA
+  rComp = rComp.upper() #reformats the dna strand
+  return rComp
+
+rnaSequence = "AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA"
 #DNA to protein code from lab 2  
 #uses the codon table to translate groups of 3 base pairs into a protein
 def dna2protein(dnaSeq, codonTableD):
@@ -47,15 +60,5 @@ def dna2protein(dnaSeq, codonTableD):
   for i in range(0, len(dnaSeq), 3):
     aminoacids += codonTableD[dnaSeq[i:i + 3]]
   return aminoacids
-
-#reformatted version of reverse strand maker from lab 2
-#reverses order of original strand and creates compliment
-def rStrand(dnaSeq):
-  while len(dnaSeq) % 3 != 0:
-    dnaSeq = dnaSeq[:len(dnaSeq)-1]
-  r = dnaSeq[::-1] #indexes dnaSeq backwards
-
-  rComp = r.replace('A', 't').replace('T', 'a').replace('C','g').replace('G','c') #creates opposite strand of DNA
-  rComp = rComp.upper() #reformats the dna strand
-  return rComp
-
+ 
+def protMass(aminoacids):
