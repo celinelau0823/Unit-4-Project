@@ -3,6 +3,7 @@
 
 import codon as d# this is my file with your codon dictionaries!
 import rnacodon as rnacd #file with rna to codon dicitonary
+import mim as massTable 
 import numpy as np
 import os
 
@@ -61,4 +62,14 @@ def dna2protein(dnaSeq, codonTableD):
     aminoacids += codonTableD[dnaSeq[i:i + 3]]
   return aminoacids
  
+aminoacids = 'SKADYEK'
 def protMass(aminoacids):
+    weightMass = 0 #starting sum = 0
+    for aacid in aminoacids:
+      weightMass += massTable.mIsoTable[aacid]
+    return weightMass
+
+print(protMass(aminoacids))
+
+
+

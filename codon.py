@@ -24,4 +24,4 @@ for key in codonDict:
     newVal = codonDict[key]
     cDict[newKey] = newVal
  
-print(cDict)
+
