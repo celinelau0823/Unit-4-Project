@@ -1,7 +1,6 @@
 ###Celine Lau
 ###Lab 4: Project Rosalind
 
-import codon as d# this is my file with your codon dictionaries!
 import rnacodon as rnacd #file with rna to codon dicitonary
 import mim as massTable 
 import numpy as np
@@ -44,7 +43,7 @@ def rStrand(dnaSeq):
 rnaSequence = "AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA"
 #DNA to protein code from lab 2  
 #uses the codon table to translate groups of 3 base pairs into a protein
-def dna2protein(dnaSeq, codonTableD):
+def rna2protein(rnaSeq, codonTableD):
   '''Given a dnaSeq, output corresponding aa chain.
 
   Input: str of dnaSeq with len%3=0
@@ -52,24 +51,24 @@ def dna2protein(dnaSeq, codonTableD):
   Output: str of amino acid sequence
   '''
   aminoacids = ""
-  if dnaSeq == "":
+  if rnaSeq == "":
     return "" 
-  elif len(dnaSeq) % 3 != 0: #if there are extra nucleotides that cannot be bunched into 3, it is cut off
-    dnaSeq = dnaSeq[:-(len(dnaSeq) %3)]
+  elif len(rnaSeq) % 3 != 0: #if there are extra nucleotides that cannot be bunched into 3, it is cut off
+    rnaSeq = rnaSeq[:-(len(rnaSeq) %3)]
 
   #converts 3 amino acids into its respective protein, and then adds it to the protein chain
-  for i in range(0, len(dnaSeq), 3):
-    aminoacids += codonTableD[dnaSeq[i:i + 3]]
+  for i in range(0, len(rnaSeq), 3):
+    aminoacids += codonTableD[rnaSeq[i:i + 3]]
   return aminoacids
  
-aminoacids = 'SKADYEK'
+print(rna2protein(rnaSequence, rnacd.RNAcodonDict))
+
 def protMass(aminoacids):
     weightMass = 0 #starting sum = 0
     for aacid in aminoacids:
       weightMass += massTable.mIsoTable[aacid]
     return weightMass
 
-print(protMass(aminoacids))
 
 
 
