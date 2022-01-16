@@ -69,6 +69,25 @@ def protMass(aminoacids):
       weightMass += massTable.mIsoTable[aacid]
     return weightMass
 
+rosalind_10 = 'ATGGTCTACATAGCTGACAAACAGCACGTAGCAATCGGTCGAATCTCGAGAGGCATATGGTCACATGATCGGTCGAGCGTGTTTCAAAGTTTGCGCCTAG'
+rosalind_12 = 'ATCGGTCGAA'
+rosalind_15 = 'ATCGGTCGAGCGTGT'
+
+def mRNA(dnaSeq, intronOne, intronTwo): #RNA SPLICE
+  if intronOne in dnaSeq:
+    while intronOne in dnaSeq:
+      dnaSeq.remove(intronOne)
+  
+  if intronTwo in dnaSeq:
+    while intronTwo in dnaSeq:
+      dnaSeq.remove(intronTwo)
+
+  tempRNA = dna2rna(dnaSeq)
+  splicedRNA = rna2protein(tempRNA)
+  return splicedRNA
+
+print(mRNA(rosalind_10,rosalind_12,rosalind_15))
+
 
 
 
