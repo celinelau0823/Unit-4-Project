@@ -40,7 +40,7 @@ def rStrand(dnaSeq):
   rComp = rComp.upper() #reformats the dna strand
   return rComp
 
-rnaSequence = "AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA"
+
 #DNA to protein code from lab 2  
 #uses the codon table to translate groups of 3 base pairs into a protein
 def rna2protein(rnaSeq, codonTableD):
@@ -59,9 +59,9 @@ def rna2protein(rnaSeq, codonTableD):
   #converts 3 amino acids into its respective protein, and then adds it to the protein chain
   for i in range(0, len(rnaSeq), 3):
     aminoacids += codonTableD[rnaSeq[i:i + 3]]
+  aminoacids = aminoacids.strip('*')
   return aminoacids
  
-print(rna2protein(rnaSequence, rnacd.RNAcodonDict))
 
 def protMass(aminoacids):
     weightMass = 0 #starting sum = 0
@@ -69,25 +69,28 @@ def protMass(aminoacids):
       weightMass += massTable.mIsoTable[aacid]
     return weightMass
 
-rosalind_10 = 'ATGGTCTACATAGCTGACAAACAGCACGTAGCAATCGGTCGAATCTCGAGAGGCATATGGTCACATGATCGGTCGAGCGTGTTTCAAAGTTTGCGCCTAG'
-rosalind_12 = 'ATCGGTCGAA'
-rosalind_15 = 'ATCGGTCGAGCGTGT'
 
-def mRNA(dnaSeq, intronOne, intronTwo): #RNA SPLICE
-  if intronOne in dnaSeq:
-    while intronOne in dnaSeq:
-      dnaSeq.remove(intronOne)
+def mRNA(dnaSeq, intronList): #RNA SPLICE
+  for intron in intronList:
+    if intron in dnaSeq:
+      while intron in dnaSeq:
+        dnaSeq = dnaSeq.replace(intron, '')
   
-  if intronTwo in dnaSeq:
-    while intronTwo in dnaSeq:
-      dnaSeq.remove(intronTwo)
-
   tempRNA = dna2rna(dnaSeq)
-  splicedRNA = rna2protein(tempRNA)
+  splicedRNA = rna2protein(tempRNA, rnacd.RNAcodonDict)
+  splicedRNA = splicedRNA.strip('*')
   return splicedRNA
 
-print(mRNA(rosalind_10,rosalind_12,rosalind_15))
+normDNA = 'GAGCCTACTAACGGGAT'
+mutDNA = 'CATCGTAATGACGGCCT'
 
+def countMutation(dnaSeq, mutatedSeq):
+  tempMutList = []
+  for i in range(len(dnaSeq)):
+    if dnaSeq[i] == mutatedSeq[i]:
+      tempMutList.append(False)
+    elif dnaSeq[i]!= mutatedSeq[i]:
+      tempMutList.append(True)
+  return sum(tempMutList)
 
-
-
+print(countMutation(normDNA,mutDNA))
