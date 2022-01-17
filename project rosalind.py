@@ -81,8 +81,6 @@ def mRNA(dnaSeq, intronList): #RNA SPLICE
   splicedRNA = splicedRNA.strip('*')
   return splicedRNA
 
-normDNA = 'GAGCCTACTAACGGGAT'
-mutDNA = 'CATCGTAATGACGGCCT'
 
 def countMutation(dnaSeq, mutatedSeq):
   tempMutList = []
@@ -93,4 +91,27 @@ def countMutation(dnaSeq, mutatedSeq):
       tempMutList.append(True)
   return sum(tempMutList)
 
-print(countMutation(normDNA,mutDNA))
+
+Rosalind_0209 = 'GCAACGCACAACGAAAACCCTTAGGGACTGGATTATTTCGTGATCGTTGTAGTTATTGGAAGTACGGGCATCAACCCAGTT'
+Rosalind_2200 = 'TTATCTGACAAAGAAAGCCGTCAACGGCTGGATAATTTCGCGATCGTGCTGGTTACTGGCGGTACGAGTGTTCCTTTGGGT'
+
+
+def transtranverse(dnaSeq, mutatedSeq):
+  tempDNAList = []
+  for i in range(len(dnaSeq)):
+    if dnaSeq[i] != mutatedSeq[i]:
+      if dnaSeq[i] == 'G' or dnaSeq[i] == 'A':
+        if mutatedSeq[i] == 'G' or mutatedSeq[i] == 'A':
+          tempDNAList.append(True)
+        else:
+          tempDNAList.append(False)
+      if dnaSeq[i] == 'C' or dnaSeq[i] == 'T':
+        if mutatedSeq[i] == 'C' or mutatedSeq[i] == 'T':
+          tempDNAList.append(True)
+        else:
+          tempDNAList.append(False)
+  transition = tempDNAList.count(True)
+  transversion = len(tempDNAList) - transition
+  return transition/transversion
+
+print(transtranverse(Rosalind_0209,Rosalind_2200))
