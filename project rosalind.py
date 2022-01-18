@@ -24,14 +24,19 @@ def read_FASTA(file_path):
   return(d)
 
 def dna2rna(dnaSeq):
- '''translates DNA into RNA'''
+ '''translates DNA into RNA
+ input: DNA sequence string
+ output: RNA sequence string'''
  rnaSeq = ""
  rnaSeq = dnaSeq.replace('T', 'U')  
  return rnaSeq
 
-#reformatted version of reverse strand maker from lab 2
-#reverses order of original strand and creates compliment
+
 def rStrand(dnaSeq):
+  '''reformatted version of reverse strand maker from lab 2
+ reverses order of original strand and creates compliment
+ input: DNA sequence string
+ output: complementary DNA sequence string'''
   while len(dnaSeq) % 3 != 0:
     dnaSeq = dnaSeq[:len(dnaSeq)-1]
   r = dnaSeq[::-1] #indexes dnaSeq backwards
@@ -64,54 +69,68 @@ def rna2protein(rnaSeq, codonTableD):
  
 
 def protMass(aminoacids):
-    weightMass = 0 #starting sum = 0
-    for aacid in aminoacids:
-      weightMass += massTable.mIsoTable[aacid]
-    return weightMass
+ '''finds the protein mass from a weighted mass index.
+ consult monoisotopic mass index for precise numbers
+ input: protein string (string of amino acids)
+ output: the weighted mass of all the amino acids summed.'''
+ weightMass = 0 #starting sum = 0
+ for aacid in aminoacids:
+    weightMass += massTable.mIsoTable[aacid] 
+ return weightMass
 
 
-def mRNA(dnaSeq, intronList): #RNA SPLICE
+def mRNA(dnaSeq, intronList): 
+  '''dna splicing: acts as splicosomes and removes introns from a 
+  given DNA sequence. 
+  input: a dna sequence and a list of introns
+  output: a string of extrons'''
   for intron in intronList:
-    if intron in dnaSeq:
+    if intron in dnaSeq: #only starts if the intron is in the DNA sequence
       while intron in dnaSeq:
-        dnaSeq = dnaSeq.replace(intron, '')
+        dnaSeq = dnaSeq.replace(intron, '') #replaces intron with a blank, removing it from the string
   
-  tempRNA = dna2rna(dnaSeq)
-  splicedRNA = rna2protein(tempRNA, rnacd.RNAcodonDict)
-  splicedRNA = splicedRNA.strip('*')
-  return splicedRNA
+  tempRNA = dna2rna(dnaSeq) #changes spliced sequence into RNA
+  extrons = rna2protein(tempRNA, rnacd.RNAcodonDict) #changes new RNA into protein
+  extrons = extrons.strip('*') #formatting
+  return extrons
 
 
 def countMutation(dnaSeq, mutatedSeq):
+  '''counts point mutation between two DNA Sequences (compares the two)
+  input: A normal DNA Sequence and the mutated version of the same sequence
+  output: the amount of base pairs that have been mutated'''
   tempMutList = []
   for i in range(len(dnaSeq)):
     if dnaSeq[i] == mutatedSeq[i]:
-      tempMutList.append(False)
+      tempMutList.append(False) #appends false if not mutated
     elif dnaSeq[i]!= mutatedSeq[i]:
-      tempMutList.append(True)
-  return sum(tempMutList)
-
-
-Rosalind_0209 = 'GCAACGCACAACGAAAACCCTTAGGGACTGGATTATTTCGTGATCGTTGTAGTTATTGGAAGTACGGGCATCAACCCAGTT'
-Rosalind_2200 = 'TTATCTGACAAAGAAAGCCGTCAACGGCTGGATAATTTCGCGATCGTGCTGGTTACTGGCGGTACGAGTGTTCCTTTGGGT'
+      tempMutList.append(True) #appends true if mutated
+  return sum(tempMutList) #gives amount of trues, same as amount of mutations 
 
 
 def transtranverse(dnaSeq, mutatedSeq):
+  '''finds the transition to transversion ratio in point mutations. Refer 
+  to explanation in previous docstring for point mutations.
+
+  transition = pyramidine -> pyramidine OR purine -> purine (ie. C->T, A->G, and vice versa of those two)
+  transversion = pyramidine -> purine OR vice versa
+
+  input: A normal DNA Sequence and the mutated version of the same sequence
+  output: transition to transversion ratio'''
   tempDNAList = []
   for i in range(len(dnaSeq)):
-    if dnaSeq[i] != mutatedSeq[i]:
+    if dnaSeq[i] != mutatedSeq[i]: #only enter if the DNA has been mutated
       if dnaSeq[i] == 'G' or dnaSeq[i] == 'A':
         if mutatedSeq[i] == 'G' or mutatedSeq[i] == 'A':
-          tempDNAList.append(True)
+          tempDNAList.append(True) #appends true if transition
         else:
-          tempDNAList.append(False)
+          tempDNAList.append(False) #appends false if transversion
       if dnaSeq[i] == 'C' or dnaSeq[i] == 'T':
         if mutatedSeq[i] == 'C' or mutatedSeq[i] == 'T':
           tempDNAList.append(True)
         else:
           tempDNAList.append(False)
-  transition = tempDNAList.count(True)
-  transversion = len(tempDNAList) - transition
+  transition = tempDNAList.count(True) #sums up amount of trues in list
+  transversion = len(tempDNAList) - transition #total mutations - # of transitions
   return transition/transversion
 
-print(transtranverse(Rosalind_0209,Rosalind_2200))
